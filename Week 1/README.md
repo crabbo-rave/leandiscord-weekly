@@ -2,7 +2,7 @@
 
 ## Proving Question:
 
-Prove that `n(n+1)/2` is the sum of `n` natural numbers.
+Prove that `n(n+1)` is the double of the sum of `n` natural numbers.
 
 ## Programming Question:
 
