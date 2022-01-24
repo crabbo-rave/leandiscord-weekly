@@ -1,9 +1,9 @@
 # How to participate
 There will be folders named `Week-1`, `Week-2` etc. Click the current on the one you want to solve. (Week order will be messed up due to how GitHub decides precendence).
 
-Each folder will have a readme will have a `README.md` with the two challenges for that week. One will be a theorem proving problem, and the other a programming related question. If you want to add your solution you must clone the repo, and submit a pr with your solution with a filename in the format of `preferred-name.lean`. Your file should have a comment at the top with your discord username and whether you are using Lean or Lean 4. (Lean may be better for some challenges because of mathlib). 
+Each folder will have a readme will have a `README.md` with the two challenges for that week. One will be a theorem proving problem, and the other a programming related question. 
 
-Last notice. Your function names should start with the week and week number, along with `_theorem` if you are soving the theorem question or `_programming` if you are solving the programming oriented question. You can solve both if you want. Example function name: `week4_theorem`.
+To add your solution just submit a PR with you code to the corresponding week's folder. Please name your file like this: `preferredname-4.lean` if you are using Lean 4 or `preferredname-3.lean` if you are using Lean 3.
 
 **Using Lean 4's FFI is forbidden. (Worried people will use C for code optimization)**
 **Good Luck!**
