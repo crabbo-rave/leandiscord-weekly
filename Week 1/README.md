@@ -2,11 +2,11 @@
 
 ## Proving Question:
 
-Prove that `n(n+1)` is the double of the sum of `n` natural numbers.
+Prove that `n(n+1)` is the double of the sum of the first `n` natural numbers.
 
 ## Programming Question:
 
-Given a list of natural numbers, find the longest sublist of consecutive numbers and return the sum of them. If there are none, return 0.
+Given a list of natural numbers, find the longest sublist (length of 2 being the minimum) of consecutive numbers and return the sum of them. If there are none, return 0.
 
 ### Easier version:
 
