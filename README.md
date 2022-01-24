@@ -1,6 +1,3 @@
-# leandiscord-weekly
-Weekly challenges for the Lean Discord Server.
-
 # How to participate
 There will be folders named `Week-1`, `Week-2` etc. Click the current on the one you want to solve. (Week order will be messed up due to how GitHub decides precendence).
 
