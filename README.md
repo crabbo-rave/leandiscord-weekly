@@ -5,4 +5,5 @@ Each folder will have a readme will have a `README.md` with the two challenges f
 
 Last notice. Your function names should start with the week and week number, along with `_theorem` if you are soving the theorem question or `_programming` if you are solving the programming oriented question. You can solve both if you want. Example function name: `week4_theorem`.
 
-<b>Good Luck!</b>
+**Using Lean 4's FFI is forbidden. (Worried people will use C for code optimization)**
+**Good Luck!**
