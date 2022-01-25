@@ -7,23 +7,13 @@ def sum : Nat → Nat
   | 0     => 0
   | n + 1 => n + 1 + sum n
 
-/- Auxiliary proofs -/
-theorem natSuccEqPlusOne {a : Nat} : Nat.succ a = a + 1 := rfl
-theorem mulDist {a b c : Nat} : a * (b + c) = a * b + a * c := by ring
-theorem squareOfSum {a b : Nat} :
-  (a + b) * (a + b) = a * a + 2 * a * b + b * b := by ring
-theorem auxPermutation {n : Nat} :
-  n * n + 2 * n + 1 + n + 1 = n * n + n + 2 * n + 2 := by ring
-
 /- The actual proof -/
 theorem twoTimesSumEqTimesSucc {n : Nat} : 2 * sum n = n * (n + 1) := by
   induction n with
     | zero => rfl
     | succ n hi =>
-      simp only [sum]
-      iterate 3 rw [mulDist]
-      rw [hi, mulDist, natSuccEqPlusOne, squareOfSum, add_comm]
-      simp [←add_assoc, auxPermutation]
+      simp only [sum, Nat.mul_add, Nat.add_succ, hi]
+      ring
 
 /-! # Programming challenge -/
 
