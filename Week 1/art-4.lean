@@ -94,10 +94,20 @@ def List.max {α : Type _} [LE α] [∀ a b : α, Decidable (a ≤ b)] [Min α] 
 
 end Misc
 
+def ConsecutiveIncreasing : List Nat → Bool
+  | [] => false
+  | [a] => false
+  | [a, b] => a ≤ b
+  | a :: b :: tail =>
+    if (b = Nat.succ a) then
+      ConsecutiveIncreasing (b :: tail)
+    else
+      false
+
 
 def LongestIncreasingStretchSum : List Nat → Nat :=
   λ l =>
-  List.sum $ Subtype.val $ List.max $ (List.filter (λ incl => incl.val.length > 1) $ maximalIncreasingStretches l)
+  List.sum $ Subtype.val $ List.max $ (List.filter (ConsecutiveIncreasing ∘ Subtype.val) $ maximalIncreasingStretches l)
 
 
 end ProgrammingQuestion
