@@ -6,7 +6,7 @@ Prove that `n * (n + 1)` is the double of the sum of the first `n` natural numbe
 
 ## Programming Question:
 
-Given a list of natural numbers, find the sum of the longest consecutive sublist of length greater than 1 that consists of consecutive ascending numbers. If there are more than one sublists with maximal length, return the sum of the first one. If there are none, return 0.
+Given a list of natural numbers, find the sum of the longest consecutive sublist of length greater than 1 that consists of consecutive ascending numbers. If there are more than one sublists with maximal length, return the sum of the last (or first) one. If there are none, return 0.
 
 ### Easier version:
 
