@@ -9,7 +9,7 @@ def sumOfLongestSublistAux : List Nat → Nat → Nat → Nat → Nat → Nat
           sumOfLongestSublistAux (y::xs) 0 (max currLen maxLen) 0 (if currLen > maxLen then currSum+x else totalSum)
 
 def sumOfLongestSublist (list: List Nat) : Nat := 
-      sumOfLongestSublistAux list 0 0 0 0
+    sumOfLongestSublistAux list 0 0 0 0
 
 #eval sumOfLongestSublist [1, 2, 3, 100, 7, 8, 9, 10] /- 34 -/
 #eval sumOfLongestSublist [1, 2, 3, 7, 4, 5, 6] /- 6 -/
