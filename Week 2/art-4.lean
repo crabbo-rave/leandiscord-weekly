@@ -99,4 +99,4 @@ theorem moveStack {n : Nat} {as bs cs as' bs' cs' : List Nat} (αs βs γs : Lis
   (init : TowersOfHanoi n as bs cs) (final : TowersOfHanoi n as' bs' cs') :
   (TowersOfHanoi n (as ++ αs) (bs ++ βs) (cs ++ γs)) → (TowersOfHanoi n (as' ++ αs) (bs' ++ βs) (cs' ++ γs)) := by
   intro moves
-  induction final
+  sorry
