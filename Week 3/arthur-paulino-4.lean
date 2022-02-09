@@ -13,8 +13,8 @@ theorem leOfLes {a₁ a₁' a₂ a₂' : α}
     (hle' : (a₁', a₂').1 < (a₁', a₂').2) :
     (max a₁ a₁', min a₂ a₂').fst < (max a₁ a₁', min a₂ a₂').snd := by
   rw [not_or_distrib] at h
-  simp only [not_le] at h
   simp only [lt_min_iff, max_lt_iff]
+  simp only [not_le] at h
   cases h
   constructor
   all_goals (constructor assumption assumption)
@@ -43,11 +43,10 @@ theorem hasMemOfAppendRight {S S' : Set α} (h : hasMem S a) :
 theorem hasMemOfAppendLeft {S S' : Set α} (h : hasMem S a) :
     hasMem (S ++ S') a := by
   induction S with
-    | nil          => simp only [hasMem] at *
-    | cons i ss hi =>
-      cases h
-      refine Or.inl $ by assumption
-      refine Or.inr $ hi $ by assumption
+    | nil          => simp only [hasMem] at h
+    | cons i ss hi => cases h with
+      | inl h' => exact Or.inl h'
+      | inr h' => exact Or.inr $ hi h'
 
 theorem hasMemOrOfAppend {S S' : Set α} (h : hasMem (S ++ S') a) :
     hasMem S a ∨ hasMem S' a := by
@@ -55,23 +54,21 @@ theorem hasMemOrOfAppend {S S' : Set α} (h : hasMem (S ++ S') a) :
     | nil =>
       simp [hasMem] at *
       exact h
-    | cons i ss hi =>
-      cases h
-      refine Or.inl $ Or.inl (by assumption)
-      have hor : hasMem ss a ∨ hasMem S' a := by refine hi $ by assumption
-      cases hor
-      refine Or.inl $ Or.inr (by assumption)
-      refine Or.inr $ by assumption
+    | cons i ss hi => cases h with
+      | inl h' => exact Or.inl $ Or.inl h'
+      | inr h' => cases hi h' with
+        | inl hi' => exact Or.inl $ Or.inr hi'
+        | inr hi' => exact Or.inr hi'
 
 /- Removes parts of a set that are outside of a certain interval -/
 def prune : Set α → Interval α → Set α
-  | ⟨(a₁, a₂), hle⟩ :: Ss, ⟨(a₁', a₂'), hle'⟩ =>
+  | ⟨(a₁, a₂), hle⟩ :: ss, ⟨(a₁', a₂'), hle'⟩ =>
     if h : a₂ ≤ a₁' ∨ a₂' ≤ a₁ then
       -- throwing current interval away
-      prune Ss ⟨(a₁', a₂'), hle'⟩
+      prune ss ⟨(a₁', a₂'), hle'⟩
     else
       -- pruning cutting current interval
-      ⟨(max a₁ a₁', min a₂ a₂'), leOfLes h hle hle'⟩ :: (prune Ss ⟨(a₁', a₂'), hle'⟩)
+      ⟨(max a₁ a₁', min a₂ a₂'), leOfLes h hle hle'⟩ :: (prune ss ⟨(a₁', a₂'), hle'⟩)
   | [], _ => []
 
 theorem hasMemOfPrune {S : Set α} {i : Interval α} {a : α} (h : (S.prune i).hasMem a) :
@@ -87,36 +84,36 @@ theorem inLimitsOfHasMemPrune {S : Set α} {i : Interval α}
 
 /- (A₁ ∪ A₂ ∪ ⋯) ∩ (B₁ ∪ B₂ ∪ ⋯) = ((A₁ ∪ A₂ ∪ ⋯) ∩ B₁) ∪ ((A₁ ∪ A₂ ∪ ⋯) ∩ B₂) ∪ ⋯ -/
 def intersec : Set α → Set α → Set α
-  | Ss, i :: Ss' => (Ss.prune i) ++ Ss.intersec Ss'
+  | ss, i :: ss' => (ss.prune i) ++ ss.intersec ss'
   | _, _         => []
 
 theorem intersecIsCorrectMP {S₁ S₂ : Set α} {a : α}
     (h : S₁.hasMem a ∧ S₂.hasMem a) :
     (S₁.intersec S₂).hasMem a := by
   induction S₂ with
-    | nil => simp [hasMem] at *
+    | nil => simp [hasMem] at h
     | cons i ss hi =>
       have h₁ := h.1
       have h₂ := h.2
-      cases h₂
-      refine hasMemOfAppendLeft $ by refine hasMemOfPruneWith h₁ (by assumption)
-      refine hasMemOfAppendRight $ hi $ And.intro h₁ (by assumption)
+      cases h₂ with
+        | inl h₂' => exact hasMemOfAppendLeft $ hasMemOfPruneWith h₁ h₂'
+        | inr h₂' => exact hasMemOfAppendRight $ hi $ And.intro h₁ h₂'
 
 theorem intersecIsCorrectMPR {S₁ S₂ : Set α} {a : α}
     (h : (S₁.intersec S₂).hasMem a) : S₁.hasMem a ∧ S₂.hasMem a := by
   constructor
   induction S₂ with
-    | nil          => simp [hasMem] at *
-    | cons i ss hi =>
-      cases hasMemOrOfAppend h
-      refine hasMemOfPrune $ by assumption
-      refine hi $ by assumption
-  induction S₂ with
-    | nil         => simp [hasMem] at *
+    | nil         => simp only [hasMem] at h
     | cons _ _ hi =>
-      cases hasMemOrOfAppend h
-      refine Or.inl $ inLimitsOfHasMemPrune $ by assumption
-      refine Or.inr $ hi $ by assumption
+      cases hasMemOrOfAppend h with
+        | inl h' => exact hasMemOfPrune h'
+        | inr h' => exact hi h'
+  induction S₂ with
+    | nil         => simp only [hasMem] at h
+    | cons _ _ hi =>
+      cases hasMemOrOfAppend h with
+        | inl h' => exact Or.inl $ inLimitsOfHasMemPrune h'
+        | inr h' => exact Or.inr $ hi h'
 
 theorem intersecIsCorrect {S₁ S₂ : Set α} {a : α} :
     S₁.hasMem a ∧ S₂.hasMem a ↔ (S₁.intersec S₂).hasMem a :=
